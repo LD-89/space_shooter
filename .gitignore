@@ -9,8 +9,9 @@ __pycache__/
 
 # PyCharm IDE  
 .idea/  
-*.iml  
-*.ipr  
+venv/
+*.iml
+*.ipr
 
 # Build artifacts  
 /dist/  
