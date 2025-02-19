@@ -1,6 +1,8 @@
 import pygame
 
+from enemy import Enemy
 from player import Player
+from spawn_controller import SpawnController
 
 # Initialize Pygame
 pygame.init()
@@ -20,11 +22,21 @@ player = Player(SCREEN_WIDTH, SCREEN_HEIGHT)
 all_sprites = pygame.sprite.Group()
 all_sprites.add(player)
 
+#Initialize enemies
+enemies = pygame.sprite.Group()
+spawn_controller = SpawnController()
+
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
+    if spawn_controller.should_spawn():
+        new_enemy = Enemy(SCREEN_WIDTH)
+        enemies.add(new_enemy)
+        all_sprites.add(new_enemy)
+
+    enemies.update()
     all_sprites.update()
 
     screen.fill((0, 0, 0))  # Black background
