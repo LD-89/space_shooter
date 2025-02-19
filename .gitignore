@@ -1,0 +1,23 @@
+# Game-specific exclusions  
+*.save  
+*.replay  
+player_config.ini  
+
+# PyGame cache  
+__pycache__/  
+*.py[cod]  
+
+# PyCharm IDE  
+.idea/  
+*.iml  
+*.ipr  
+
+# Build artifacts  
+/dist/  
+/build/  
+*.egg-info/  
+
+# Asset working files  
+assets/raw/  
+*.psd  
+*.blend  
