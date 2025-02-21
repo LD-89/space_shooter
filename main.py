@@ -1,5 +1,6 @@
 import pygame
 
+from collisions_engine import check_collisions
 from enemy import Enemy
 from player import Player
 from spawn_controller import SpawnController
@@ -30,6 +31,9 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            projectile = player.shoot(pygame.mouse.get_pos())
+            all_sprites.add(projectile)
 
     if spawn_controller.should_spawn():
         new_enemy = Enemy(SCREEN_WIDTH)
@@ -38,6 +42,8 @@ while running:
 
     enemies.update()
     all_sprites.update()
+
+    check_collisions()
 
     screen.fill((0, 0, 0))  # Black background
     all_sprites.draw(screen)

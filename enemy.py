@@ -2,10 +2,12 @@ import random
 
 import pygame
 
+from space_shooter_sprite import SpaceShooterSprite
 
-class Enemy(pygame.sprite.Sprite):
+
+class Enemy(SpaceShooterSprite):
     def __init__(self, screen_width, screen_height):
-        super().__init__()
+        super().__init__(screen_width, screen_height)
         self.image = pygame.Surface((50, 60))
         self.image.fill((255, 0, 0))  # Red
         self.rect = self.image.get_rect()
@@ -13,8 +15,6 @@ class Enemy(pygame.sprite.Sprite):
         self.rect.y = -self.rect.height
         self.speed = 8
         self.spawn_time = pygame.time.get_ticks()  # Track creation time
-        self.screen_width = screen_width
-        self.screen_height = screen_height
 
     def update(self):
         self.rect.y += self.speed
