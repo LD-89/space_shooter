@@ -1,9 +1,12 @@
 import pygame
 
+from projectile import Projectile
+from space_shooter_sprite import SpaceShooterSprite
 
-class Player(pygame.sprite.Sprite):
+
+class Player(SpaceShooterSprite):
     def __init__(self, screen_width, screen_height):
-        super().__init__()
+        super().__init__(screen_width, screen_height)
         self.image = pygame.Surface((50, 60))
         self.image.fill((0, 128, 255))  # Blue
         self.rect = self.image.get_rect()
@@ -12,8 +15,9 @@ class Player(pygame.sprite.Sprite):
         self.velocity = pygame.math.Vector2(0, 0)
         self.acceleration = 0.5
         self.friction = -0.12
-        self.screen_width = screen_width
-        self.screen_height = screen_height
+        self.shoot_cooldown = 300  # Milliseconds
+        self.last_shot = 0
+        self.projectiles = pygame.sprite.Group()
 
     def update(self):
         keys = pygame.key.get_pressed()
@@ -37,3 +41,14 @@ class Player(pygame.sprite.Sprite):
 
         # Boundaries check
         self.rect.clamp_ip(pygame.Rect(0, 0, self.screen_width, self.screen_height))
+
+    def shoot(self, target_pos):
+        current_time = pygame.time.get_ticks()
+        if current_time - self.last_shot > self.shoot_cooldown:
+            new_projectile = Projectile(
+                self.rect.center,
+                target_pos
+            )
+            self.projectiles.add(new_projectile)
+            self.last_shot = current_time
+            return new_projectile
