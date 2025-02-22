@@ -1,20 +1,26 @@
 import pygame
 
+from game_state import GameState
 
-def check_collisions():
-    # Player-enemy collisions
-    pygame.sprite.spritecollide(
-        player, enemies, True,
-        pygame.sprite.collide_mask
-    )
 
-    # Projectile-enemy collisions
-    pygame.sprite.groupcollide(
-        projectiles, enemies,
-        True, True,
-        pygame.sprite.collide_rect_ratio(0.7)
-    )
+class CollisionsEngine():
+    def __init__(self, game_state: GameState):
+        self.game_state = game_state
 
-    # Boundary checks
-    for entity in all_sprites:
-        entity.rect.clamp_ip(screen_rect)
+    def check_collisions(self):
+        # Player-enemy collisions
+        pygame.sprite.spritecollide(
+            self.game_state.player, self.game_state.enemies, True,
+            pygame.sprite.collide_mask
+        )
+
+        # Projectile-enemy collisions
+        pygame.sprite.groupcollide(
+            self.game_state.projectiles, self.game_state.enemies,
+            True, True,
+            pygame.sprite.collide_rect_ratio(0.7)
+        )
+
+        # Boundary checks
+        for entity in self.game_state.all_entities:
+            entity.rect.clamp_ip(screen_rect)
