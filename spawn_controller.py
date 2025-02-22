@@ -9,7 +9,7 @@ class SpawnController:
         self.spawn_interval = 2000  # 2 seconds
         self.variance = 500  # 500ms randomization
 
-    def should_spawn(self):
+    def should_enemy_spawn(self):
         current_time = pygame.time.get_ticks()
         if current_time - self.last_spawn > self.spawn_interval:
             self.last_spawn = current_time

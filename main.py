@@ -1,8 +1,7 @@
 import pygame
 
-from collisions_engine import check_collisions
-from enemy import Enemy
-from player import Player
+from collisions_engine import CollisionsEngine
+from game_state import GameState
 from spawn_controller import SpawnController
 
 # Initialize Pygame
@@ -18,13 +17,7 @@ pygame.display.set_caption("Space Shooter")
 running = True
 clock = pygame.time.Clock()
 
-# Initialize player and sprite group
-player = Player(SCREEN_WIDTH, SCREEN_HEIGHT)
-all_sprites = pygame.sprite.Group()
-all_sprites.add(player)
-
-#Initialize enemies
-enemies = pygame.sprite.Group()
+game_state = GameState(SCREEN_WIDTH, SCREEN_HEIGHT)
 spawn_controller = SpawnController()
 
 while running:
@@ -32,21 +25,17 @@ while running:
         if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
-            projectile = player.shoot(pygame.mouse.get_pos())
-            all_sprites.add(projectile)
+            projectile = game_state.player.shoot(pygame.mouse.get_pos())
+            game_state.add_projectile(projectile)
 
-    if spawn_controller.should_spawn():
-        new_enemy = Enemy(SCREEN_WIDTH)
-        enemies.add(new_enemy)
-        all_sprites.add(new_enemy)
+    if spawn_controller.should_enemy_spawn():
+        game_state.add_enemy()
 
-    enemies.update()
-    all_sprites.update()
-
-    check_collisions()
+    game_state.update()
+    CollisionsEngine(game_state).check_collisions()
 
     screen.fill((0, 0, 0))  # Black background
-    all_sprites.draw(screen)
+    game_state.all_entities.draw(screen)
     pygame.display.flip()
     clock.tick(120)  # FPS
 
