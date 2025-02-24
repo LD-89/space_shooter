@@ -7,6 +7,8 @@ from space_shooter_sprite import SpaceShooterSprite
 class Player(SpaceShooterSprite):
     def __init__(self, screen_width, screen_height):
         super().__init__(screen_width, screen_height)
+        self.health = 100
+        self.max_health = 100
         self.image = pygame.Surface((50, 60))
         self.image.fill((0, 128, 255))  # Blue
         self.rect = self.image.get_rect()
@@ -46,6 +48,8 @@ class Player(SpaceShooterSprite):
         current_time = pygame.time.get_ticks()
         if current_time - self.last_shot > self.shoot_cooldown:
             new_projectile = Projectile(
+                self.screen_width,
+                self.screen_height,
                 self.rect.center,
                 target_pos
             )
